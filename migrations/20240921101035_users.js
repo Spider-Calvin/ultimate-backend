@@ -7,9 +7,9 @@ exports.up = function (knex) {
 		table.increments();
 		table.uuid('userid').primary();
 		table.string('name').comment('name of the user');
-		table.string('user_name').comment('user_name of the user');
-		table.string('mobile').comment('mobile number of the user');
-		table.string('email').comment('email of the user');
+		table.string('user_name').unique().comment('user_name of the user');
+		table.string('mobile').unique().comment('mobile number of the user');
+		table.string('email').unique().comment('email of the user');
 		table.date('dob').comment('date of birth of user');
 		table.string('address').comment('address  of user');
 		table.string('pincode').comment('pincode  of user');

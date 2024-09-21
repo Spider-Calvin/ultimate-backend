@@ -6,6 +6,26 @@ const { emailRegex, mobileRegex } = require('../../utils');
 const create_user = async (req, res) => {
 	try {
 		const body = req.body;
+
+		// Check if user with same email, mobile, or user_name exists
+		const existingUser = await knex('users')
+			.where({ email: body.email.toLowerCase() })
+			.orWhere({ mobile: body.mobile })
+			.orWhere({ user_name: body.user_name })
+			.first();
+
+		if (existingUser) {
+			if (existingUser.email === body.email.toLowerCase()) {
+				return res.status(400).json({ status: 0, msg: 'Email already exists' });
+			}
+			if (existingUser.mobile === body.mobile) {
+				return res.status(400).json({ status: 0, msg: 'Mobile number already exists' });
+			}
+			if (existingUser.user_name === body.user_name) {
+				return res.status(400).json({ status: 0, msg: 'Username already exists' });
+			}
+		}
+
 		const password = await bcrypt.hash(body.password, 10);
 
 		const newUser = {
@@ -23,7 +43,7 @@ const create_user = async (req, res) => {
 		};
 
 		const result = await knex('users').insert(newUser).returning('*');
-
+		console.log(result);
 		res.status(200).json({ status: 1, msg: 'User created successfully', data: result[0] });
 	} catch (error) {
 		// Handle any errors that occur during the insert
