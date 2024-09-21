@@ -21,5 +21,5 @@ module.exports = {
       min: 2,
       max: 20, // Increase the pool size
     },
-  },
+  }
 };
