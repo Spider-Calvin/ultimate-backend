@@ -8,12 +8,6 @@ auth.post('/create_user', auth_middleware.create_user, auth_controller.create_us
 //not to be exposed anywhere
 auth.delete('/delete_user', auth_middleware.delete_user, auth_controller.delete_user);
 
-auth.get('/login_user', (req, res) => {
-	try {
-		res.status(200).json({ status: 0, msg: 'hello' + asds });
-	} catch (error) {
-		res.status(500).json({ status: 0, msg: error.message });
-	}
-});
+auth.post('/login_user', auth_middleware.login_user, auth_controller.login_user);
 
 module.exports = auth;

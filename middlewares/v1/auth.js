@@ -2,7 +2,6 @@ const Joi = require('joi');
 const dayjs = require('dayjs');
 const { validate: uuidValidate } = require('uuid');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-// Add customParseFormat plugin to Day.js
 dayjs.extend(customParseFormat);
 
 const userSchema = Joi.object({
@@ -44,4 +43,21 @@ const delete_user = (req, res, next) => {
 	next();
 };
 
-module.exports = { create_user, delete_user };
+const loginSchema = Joi.object({
+	user: Joi.string().min(3).required(),
+	password: Joi.string().min(6).required(),
+});
+
+const login_user = (req, res, next) => {
+	const body = req.body;
+
+	const { error } = loginSchema.validate(body);
+
+	if (error) {
+		return res.status(400).json({ status: 0, msg: 'Validation error', details: error.details });
+	}
+
+	next();
+};
+
+module.exports = { create_user, delete_user, login_user };
