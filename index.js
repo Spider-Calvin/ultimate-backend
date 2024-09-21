@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 const knex = require('./database');
 
+//to access req body in json format
+app.use(express.json());
+
 //routes import
 const router_v1 = require('./routes/v1');
 
